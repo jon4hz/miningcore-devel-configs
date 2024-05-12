@@ -1,0 +1,12 @@
+postgresql:
+  enabled: true
+  auth:
+    existingSecret: postgresql
+  serviceAccount:
+    automountServiceAccountToken: false
+  architecture: standalone
+  primary:
+    persistence:
+      enabled: true
+      storageClass: csi-cinder-classic
+      size: 5Gi
