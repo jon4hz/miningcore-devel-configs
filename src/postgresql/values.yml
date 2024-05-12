@@ -8,5 +8,5 @@ postgresql:
   primary:
     persistence:
       enabled: true
-      storageClass: csi-cinder-classic
+      storageClass: standard
       size: 5Gi
