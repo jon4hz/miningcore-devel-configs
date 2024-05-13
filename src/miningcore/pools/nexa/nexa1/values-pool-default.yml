@@ -6,6 +6,14 @@ miningcore:
   postgresql:
     enabled: false
 
+  externalDatabase:
+    host: postgresql
+    port: 5432
+    database: miningcore
+    username: miningcore
+    existingSecretName: postgresql
+    existingSecretKey: password
+
   common:
     apiPort: 5000
 
