@@ -3,6 +3,9 @@ miningcore:
     enabled: false
     jobLabel: miningcore
 
+  postgresql:
+    enabled: false
+
   common:
     apiPort: 5000
 
