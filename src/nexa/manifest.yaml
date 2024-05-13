@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nexa
+  namespace: miningcore
+data:
+  nexa.conf: |
+    printtoconsole=1
+    testnet=1
+    server=1
+    rpcuser=test
+    rpcpassword=test
+    rpcallowip=0.0.0.0/0
+    prune=1000
+    rpcbind=0.0.0.0
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nexa
+  namespace: miningcore
+spec:
+  selector:
+    matchLabels:
+      app: nexa
+  serviceName: nexa
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nexa
+    spec:
+      containers:
+      - name: nexa
+        image: localhost:5000/nexa:1.4.0.1
+        ports:
+        - containerPort: 7229
+          name: rpc
+        volumeMounts:
+        - name: nexadata
+          mountPath: /nexa/.nexa/
+        - name: nexaconfig
+          mountPath: /nexa/.nexa/nexa.conf
+          subPath: nexa.conf
+      volumes:
+        - name: nexaconfig
+          configMap:
+            name: nexa
+  volumeClaimTemplates:
+  - metadata:
+      name: nexadata
+      namespace: miningcore
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 20Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexa
+  namespace: miningcore
+spec:
+  selector:
+    app: nexa
+  ports:
+  - name: rpc
+    port: 7229
+    protocol: TCP
+    targetPort: rpc
