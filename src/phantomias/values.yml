@@ -2,9 +2,9 @@ phantomias:
   replicaCount: 2
 
   image:
-    repository: ghcr.io/1oopio/phantomias
+    repository: localhost:5000/phantomias
     pullPolicy: IfNotPresent
-    tag: ""
+    tag: "devel"
 
   serviceAccount:
     create: false
