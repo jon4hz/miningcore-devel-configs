@@ -28,7 +28,7 @@ spec:
         repoURL: git@github.com:jon4hz/miningcore-devel-configs
         targetRevision: HEAD
       destination:
-        server: "{{server}}"
+        server: https://kubernetes.default.svc
         namespace: miningcore
       syncPolicy:
         automated:
