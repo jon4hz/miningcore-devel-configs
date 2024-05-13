@@ -64,7 +64,7 @@ miningcore:
     pool:
       enabled: true
       id: nexa1
-      address: nexatest:nqtsq5g5gx3v0vjsd7u89gwgazahcarftxmn6mwjzw9yngju
+      address: nexatest:nqtsq5g5nakznedw2p6feeq9fefzlwhnzpgqewpn66wwtxqz
       banning:
         enabled: false
       blockRefreshInterval: 500
@@ -100,6 +100,6 @@ miningcore:
             retargetTime: 15
             variancePercent: 30
       rewardRecipients:
-        - address: nexatest:nqtsq5g5f7slpk0sw64c2k65a36mn0ja5azfst63fapjlrlm
+        - address: nexatest:nqtsq5g5zqwegk77mt50959sxj5saytycjn7l2t9mlvx3e7f
           percentage: 1.0
           type: op
