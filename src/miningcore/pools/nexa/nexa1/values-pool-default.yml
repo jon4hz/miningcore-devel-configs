@@ -1,0 +1,94 @@
+miningcore:
+  serviceMonitor:
+    enabled: false
+    jobLabel: miningcore
+
+  common:
+    apiPort: 5000
+
+  stratum:
+    enabled: true
+    name: stratum
+    image:
+      repository: localhost:5000/miningcore
+      pullPolicy: Always
+      tag: "devel"
+    stratum_ports:
+      - name: vardiff1
+        containerPort: 4600
+        protocol: TCP
+        nodePort: 30000
+      - name: "highdiff1"
+        containerPort: 4601
+        protocol: TCP
+        nodePort: 30001
+    service:
+      type: NodePort
+    resources: {}
+
+  payout:
+    enabled: true
+    image:
+      repository: localhost:5000/miningcore
+      pullPolicy: Always
+      tag: "devel"
+
+  stats:
+    enabled: true
+    image:
+      repository: localhost:5000/miningcore
+      pullPolicy: Always
+      tag: "devel"
+
+  config:
+    paymentProcessing:
+      interval: 180
+    statistics:
+      enableReportedHashrate: false
+      updateInterval: 180
+      reportedHashrateInterval: 320
+      hashrateCalculationWindow: 10
+      gcInterval: 4
+      cleanupDays: 365
+    pool:
+      enabled: true
+      id: nexa1
+      address: nexatest:nqtsq5g5gx3v0vjsd7u89gwgazahcarftxmn6mwjzw9yngju
+      banning:
+        enabled: false
+      blockRefreshInterval: 500
+      clientConnectionTimeout: 600
+      enableInternalStratum: true
+      jobRebroadcastTimeout: 1000
+      paymentProcessing:
+        enabled: true
+        minimumPayment: 1
+        payoutScheme: PPLNS
+        payoutSchemeConfig:
+          factor: 0.5
+      daemons:
+        - user: test
+          password: test
+          host: nexa
+          port: 7229
+      ports:
+        "4600":
+          difficulty: 0.1
+          listenAddress: "*"
+          name: Pool
+          tls: false
+          varDiff: null
+        "4601":
+          difficulty: 0.01
+          listenAddress: "*"
+          name: Pool1
+          tls: false
+          varDiff:
+            minDiff: 0.0001
+            targetTime: 2
+            retargetTime: 15
+            variancePercent: 30
+      rewardRecipients:
+        - address: nexatest:nqtsq5g5f7slpk0sw64c2k65a36mn0ja5azfst63fapjlrlm
+          percentage: 1.0
+          type: op

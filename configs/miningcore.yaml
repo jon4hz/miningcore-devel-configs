@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: miningcore
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: git@github.com:jon4hz/miningcore-devel-configs
+        revision: HEAD
+        files:
+          - path: pools/**/meta.json
+  template:
+    metadata:
+      name: "{{poolname}}"
+      labels:
+        environment: prod
+    spec:
+      project: default
+      source:
+        helm:
+          skipCrds: true
+          releaseName: "{{poolname}}"
+          valueFiles:
+            - "./pools/{{coin}}/values-coin-default.yml"
+            - "./pools/{{coin}}/{{poolname}}/values-pool-default.yml"
+        path: ./src/miningcore/
+        repoURL: git@github.com:jon4hz/miningcore-devel-configs
+        targetRevision: HEAD
+      destination:
+        server: "{{server}}"
+        namespace: miningcore
+      syncPolicy:
+        automated:
+          prune: true
+        syncOptions:
+          - CreateNamespace=true
