@@ -1,0 +1,11 @@
+apiVersion: v2
+name: phantomias
+description: phantomias
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+
+dependencies:
+  - name: phantomias
+    version: 0.1.10
+    repository: https://raw.githubusercontent.com/1oopio/charts/release

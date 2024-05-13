@@ -1,0 +1,90 @@
+phantomias:
+  replicaCount: 2
+
+  image:
+    repository: ghcr.io/1oopio/phantomias
+    pullPolicy: IfNotPresent
+    tag: ""
+
+  serviceAccount:
+    create: false
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  service:
+    type: ClusterIP
+    port: 8080
+    metricsPort: 8081
+
+  ingress:
+    enabled: false
+
+  serviceMonitor:
+      enabled: false
+
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 500Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+  autoscaling:
+    enabled: false
+
+  config:
+    db:
+      host: postgresql
+      port: 5432
+      user: miningcore
+      dbname: miningcore
+      sslmode: disable
+      secretName: postgresql
+      secretKey: password
+    miningcore:
+      url: http://nexa1-miningcore-miningcore-api:5000/
+      ws: ws://nexa1-miningcore-miningcore-api:5000/notifications
+      timeout: 100s
+    price:
+      vsCurrencies:
+        - usd
+    metrics:
+      enabled: true
+    pools:
+      - enabled: true
+        id: nexa1
+        type: nexa
+        rpc: ""
+        algorithm: NexaPow
+        fee: 1
+        fee_type: PPLNS
+        name: Nexa
+        coin: NEX
+        block_link: https://testnet-nexa-explorer.bitcoinunlimited.info/block-height/%d
+        tx_link: https://testnet-nexa-explorer.bitcoinunlimited.info/tx/%s
+        ports:
+          "4600":
+            difficulty: 0.1
+            var_diff: false
+            tls: false
+            tls_auto: false
+          "4601":
+            difficulty: 0.01
+            var_diff: true
+            tls: false
+            tls_auto: false
+        address: nexatest:nqtsq5g5gx3v0vjsd7u89gwgazahcarftxmn6mwjzw9yngju
+        min_payout: 1
+        share_multiplier: 1
