@@ -9,7 +9,7 @@ spec:
         repoURL: git@github.com:jon4hz/miningcore-devel-configs
         revision: HEAD
         files:
-          - path: pools/**/meta.json
+          - path: src/miningcore/pools/**/meta.json
   template:
     metadata:
       name: "{{poolname}}"
