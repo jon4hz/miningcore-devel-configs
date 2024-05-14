@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: xelis-wallet
+  namespace: miningcore
+spec:
+  selector:
+    matchLabels:
+      app: xelis-wallet
+  serviceName: xelis-wallet
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xelis-wallet
+    spec:
+      containers:
+      - name: xelis-wallet
+        image: xelis/wallet
+        args: ["--network=testnet", "--daemon-address=http://xelis:8080", "--wallet-path=/xelis-wallet/"]
+        stdin: true
+        tty: true
+        ports:
+        - containerPort: 8081
+          name: rpc
+        volumeMounts:
+        - name: xelis-walletdata
+          mountPath: /xelis-wallet/
+  volumeClaimTemplates:
+  - metadata:
+      name: xelis-walletdata
+      namespace: miningcore
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 10Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xelis-wallet
+  namespace: miningcore
+spec:
+  selector:
+    app: xelis-wallet
+  ports:
+  - name: rpc
+    port: 8081
+    protocol: TCP
+    targetPort: rpc
