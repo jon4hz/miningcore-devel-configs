@@ -19,6 +19,8 @@ spec:
       - name: xelis
         image: xelis/daemon
         args: ["--network=testnet"]
+        stdin: true
+        tty: true
         ports:
         - containerPort: 8080
           name: rpc
