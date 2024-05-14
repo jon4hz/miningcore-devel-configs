@@ -27,6 +27,8 @@ spec:
     metadata:
       namespace: kube-system
       labels:
+        actual-registry: "true"
+        addonmanager.kubernetes.io/mode: Reconcile
         kubernetes.io/minikube-addons: registry
     spec:
       containers:
