@@ -18,7 +18,7 @@ spec:
       containers:
       - name: xelis
         image: xelis/daemon
-        command: ["--dir-path", "/xelis/", "--network", "testnet"]
+        command: ["--dir-path=/xelis/", "--network=testnet"]
         ports:
         - containerPort: 8080
           name: rpc
