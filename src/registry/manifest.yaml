@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: registry-pvc
+  namespace: kube-system
+spec:
+  resources:
+    requests:
+      storage: 20Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: registry
+  namespace: kube-system
+  labels:
+    kubernetes.io/minikube-addons: registry
+spec:
+  replicas: 1
+  selector:
+    kubernetes.io/minikube-addons: registry
+  template:
+    metadata:
+      namespace: kube-system
+      labels:
+        kubernetes.io/minikube-addons: registry
+    spec:
+      containers:
+        - name: registry
+          image: "docker.io/registry:2.8.3@sha256:8a60daaa55ab0df4607c4d8625b96b97b06fd2e6ca8528275472963c4ae8afa0"
+          volumeMounts:
+          - mountPath: /var/lib/registry
+            name: registry
+      volumes:
+        - name: registry
+          persistentVolumeClaim:
+            claimName: registry-pvc
