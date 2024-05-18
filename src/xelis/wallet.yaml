@@ -22,7 +22,7 @@ spec:
             [
               "--network=testnet",
               "--daemon-address=http://xelis:8080",
-              "--rpc-port=8081",
+              "--rpc-bind-address=0.0.0.0:8081",
               "--rpc-username=xelis",
               "--rpc-password=xelis",
               "--password=jz",
