@@ -16,26 +16,35 @@ spec:
         app: xelis-wallet
     spec:
       containers:
-      - name: xelis-wallet
-        image: xelis/wallet
-        args: ["--network=testnet", "--daemon-address=http://xelis:8080"]
-        stdin: true
-        tty: true
-        ports:
-        - containerPort: 8081
-          name: rpc
-        volumeMounts:
-        - name: xelis-walletdata
-          mountPath: /var/run/xelis/data/
+        - name: xelis-wallet
+          image: xelis/wallet
+          args:
+            [
+              "--network=testnet",
+              "--daemon-address=http://xelis:8080",
+              "--rpc-port=8081",
+              "--rpc-username=xelis",
+              "--rpc-password=xelis",
+              "--password=jz",
+              "--wallet-path=xel1",
+            ]
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 8081
+              name: rpc
+          volumeMounts:
+            - name: xelis-walletdata
+              mountPath: /var/run/xelis/data/
   volumeClaimTemplates:
-  - metadata:
-      name: xelis-walletdata
-      namespace: miningcore
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 10Gi
+    - metadata:
+        name: xelis-walletdata
+        namespace: miningcore
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 10Gi
 ---
 apiVersion: v1
 kind: Service
@@ -46,7 +55,7 @@ spec:
   selector:
     app: xelis-wallet
   ports:
-  - name: rpc
-    port: 8081
-    protocol: TCP
-    targetPort: rpc
+    - name: rpc
+      port: 8081
+      protocol: TCP
+      targetPort: rpc
