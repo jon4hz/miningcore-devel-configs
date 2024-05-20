@@ -18,7 +18,6 @@ spec:
       containers:
         - name: xelis-main
           image: xelis/daemon
-          args: [""]
           stdin: true
           tty: true
           ports:
