@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: xelis-main
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:jon4hz/miningcore-devel-configs
+    path: ./src/xelis-main/
+    targetRevision: HEAD
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: miningcore
+  syncPolicy:
+    automated:
+      prune: true
+    syncOptions:
+      - CreateNamespace=true

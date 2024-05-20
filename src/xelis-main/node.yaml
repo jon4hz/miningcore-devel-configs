@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: xelis-main
+  namespace: miningcore
+spec:
+  selector:
+    matchLabels:
+      app: xelis-main
+  serviceName: xelis-main
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: xelis-main
+    spec:
+      containers:
+        - name: xelis-main
+          image: xelis/daemon
+          args: [""]
+          stdin: true
+          tty: true
+          ports:
+            - containerPort: 8080
+              name: rpc
+          volumeMounts:
+            - name: xelis-data
+              mountPath: /var/run/xelis/data
+  volumeClaimTemplates:
+    - metadata:
+        name: xelis-data
+        namespace: miningcore
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 50Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xelis-main
+  namespace: miningcore
+spec:
+  selector:
+    app: xelis-main
+  ports:
+    - name: rpc
+      port: 8080
+      protocol: TCP
+      targetPort: rpc
